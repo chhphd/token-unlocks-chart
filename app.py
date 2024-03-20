@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-# import numpy as np
+import numpy as np
 
 # Inputs
 coin_name = 'TEST'
@@ -49,7 +49,7 @@ for category in unlock_schedule:
             category['unlocked_supply'].append(category['tge_supply'])
         
         # Amount s0 while cliff
-        elif month <= category['cliff']:
+        elif month <= category['cliff'] + 1 :
             category['unlocked_supply'].append(0)
         
         # Amount while after cliff before vesting end
@@ -61,28 +61,28 @@ for category in unlock_schedule:
         category['unlocked_supply'].append(0)
 
 
-# # Create new dict for plot
-# plot_schedule = {}
-# for category in unlock_schedule:
-#     new_key = category['name']
-#     new_value = category['unlocked_supply']
-#     plot_schedule[new_key] = [sum(new_value[:i+1]) for i in range(len(new_value))]
+# Create new dict for plot
+plot_schedule = {}
+for category in unlock_schedule:
+    new_key = category['name']
+    new_value = category['unlocked_supply']
+    plot_schedule[new_key] = [sum(new_value[:i+1]) for i in range(len(new_value))]
 
-# # Chart
-# # Create plot
-# fig, ax = plt.subplots()
-# ax.stackplot(months_list, plot_schedule.values(), labels=plot_schedule.keys(), alpha=0.8)
+# Chart
+# Create plot
+fig, ax = plt.subplots()
+ax.stackplot(months_list, plot_schedule.values(), labels=plot_schedule.keys(), alpha=0.8)
 
-# # Plot text
-# ax.legend(loc='upper left', reverse=True)
-# ax.set_title(f'Token unlocks for {coin_name}')
-# ax.set_xlabel('Month')
-# ax.set_ylabel('Number of coins')
+# Plot text
+ax.legend(loc='upper left', reverse=True)
+ax.set_title(f'Token unlocks for {coin_name}')
+ax.set_xlabel('Month')
+ax.set_ylabel('Number of coins')
 
-# # Plot formats
-# plt.ticklabel_format(style='plain', axis='y') # Format the number from 1e6 to 1000000
-# plt.grid(True, which='both', linestyle='-', linewidth=0.5, color='gray') # Show grid
-# # plt.xticks(np.arange(1, months_list, step=6)) # Change the number of ticks on x axis
+# Plot formats
+plt.ticklabel_format(style='plain', axis='y') # Format the number from 1e6 to 1000000
+plt.grid(True, which='both', linestyle='-', linewidth=0.5, color='gray') # Show grid
+plt.xticks(np.arange(1, months_list[-1] + 1, step=1)) # Change the number of ticks on x axis. Add 1 to months_list because of tge.
 
-# # Print chart
-# plt.show()         
+# Print chart
+plt.show()         
